@@ -1,0 +1,49 @@
+<html>
+    <head>
+        <title>WebSocketServer</title>
+    </head>
+    <body>
+        <h1>WebSocket Server</h1>
+        <p>
+            <a href="javascript:WebSocketTest()">Run WebSocket Script</a>
+        </p>
+        <p>
+            <a href="javascript:WebSocketClose()">Close WebSocket</a>
+        </p>
+        <input type="text" id="myText" value="Mickey">
+        <p id="reply"></p>
+        <script type="text/javascript">
+                if ("WebSocket" in window)  
+                {    
+                    var ws = new WebSocket("ws://127.0.0.1:9980/ws");    
+                    ws.onopen = function()      
+                    {        
+                        var msg = {};
+                        msg["command"] = document.getElementById("myText").value;
+                        ws.send(JSON.stringify(msg));     
+                    };    
+                    ws.onmessage = function(evt)      
+                    {         
+                        var msg = evt.data;       
+                        document.getElementById("reply").textContent = msg;    
+                    };  
+                    ws.onclose = function()  
+                    {      
+                        alert("WebSocket closed.");    
+                    }; 
+                } 
+                else 
+                {    
+                    alert("This browser does not support WebSockets."); 
+                }
+                function WebSocketTest(){
+                    var msg = {};
+                    msg["command"] = document.getElementById("myText").value;
+                    ws.send(JSON.stringify(msg));     
+                }
+                function WebSocketClose(){
+                 ws.close();}
+        </script>
+    </body>
+</html>
+
